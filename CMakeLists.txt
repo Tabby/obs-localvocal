@@ -39,6 +39,13 @@ set(USE_SYSTEM_CURL
     OFF
     CACHE STRING "Use system cURL")
 
+if(USE_SYSTEM_CUDA)
+  add_compile_definitions("LOCALVOCAL_WITH_CUDA")
+  find_package(CUDAToolkit REQUIRED)
+  #set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CUDA_STANDARD 14)
+  target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE CUDA::cudart CUDA::cuda_driver CUDA::cublas)
+endif()
+
 if(USE_SYSTEM_CURL)
   find_package(CURL REQUIRED)
   target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE "${CURL_LIBRARIES}")
